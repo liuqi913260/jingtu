@@ -1,0 +1,13 @@
+const assert = require('assert');
+const fs = require('fs');
+const html = fs.readFileSync('index.html','utf8');
+const js = fs.readFileSync('app.js','utf8');
+const css = fs.readFileSync('styles.css','utf8');
+assert.ok(html.indexOf('src/core.js') < html.indexOf('src="app.js"'), 'core must load before app');
+for (const id of ['view-root','modal-backdrop','modal','toast','global-search','header-publish']) assert.ok(html.includes('id="'+id+'"'), id+' missing');
+for (const name of ['load','save','render','bindGlobal','bindView','bindModal','profileModal']) assert.ok(js.includes('function '+name), name+' missing');
+assert.ok(js.includes('JingTuCore.loadFromAdapter')); assert.ok(js.includes('JingTuCore.saveToAdapter'));
+assert.ok(js.includes("e.key==='Escape'"));
+assert.ok(css.includes('@media (max-width:700px)'));
+assert.ok(css.includes('.toast.show'));
+console.log('Phase 2 structure: PASS');
